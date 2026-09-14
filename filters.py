@@ -37,7 +37,7 @@ JAVA_KEYWORDS = [
     "llm", "claude", "copilot", "mcp", "prompt",
 ]
 
-LOCATION_OK = ["montreal", "montréal", "quebec", "québec", "canada", "remote"]
+LOCATION_OK = ["montreal", "montréal", "quebec", "québec", "remote"]
 
 MIN_JAVA_HITS = 5
 
