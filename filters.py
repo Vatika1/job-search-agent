@@ -27,7 +27,7 @@ JAVA_KEYWORDS = [
     "postgresql", "postgres", "sql", "oracle", "db2", "mongodb", "elasticsearch",
     "hive", "impala", "spark",
     # cloud / devops
-    "aws", "eks", "ecs", "s3", "rds", "msk", "docker", "kubernetes", "terraform",
+    "aws", "eks", "ecs", "s3", "rds", "DynamoDB", "msk", "docker", "kubernetes", "terraform",
     "github actions", "jenkins", "ci/cd", "maven", "gradle", "sonarqube",
     "opentelemetry", "cloudwatch", "observability",
     # testing / practice

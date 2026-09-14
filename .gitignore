@@ -3,3 +3,4 @@ jobs.db
 .env
 __pycache__/
 .idea/
+cv.txt

@@ -2,6 +2,7 @@ from datetime import datetime, timedelta, timezone
 from fetchers.greenhouse import fetch
 from storage import get_conn, is_seen, mark_seen
 from filters import title_ok, java_hits, MIN_JAVA_HITS, location_ok
+from scorer import score
 
 SLUGS = ["behavox", "workleap", "lyft"]
 MAX_AGE_DAYS = 3
@@ -28,7 +29,10 @@ if __name__ == "__main__":
                 continue
             if is_seen(conn, job["id"]):
                 continue
-            print(f"{job['title']} | {job['company']} | {job['location']} | {job['posted_at']} | {job['url']}")
+            result = score(job)
+            print(f"{result['score']:>3}  {job['title']} | {job['company']} | {job['location']}")
+            print(f"     {result['seniority_fit']} | {result['reason']}")
+            print(f"     {job['url']}\n")
             mark_seen(conn, job["id"])
             new_count += 1
     print(f"\n{new_count} new jobs")
