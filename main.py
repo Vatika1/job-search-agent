@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta, timezone
 from fetchers.greenhouse import fetch
 from storage import get_conn, is_seen, mark_seen
-from filters import title_ok, java_hits, MIN_JAVA_HITS
+from filters import title_ok, java_hits, MIN_JAVA_HITS, location_ok
 
 SLUGS = ["behavox", "workleap", "lyft"]
 MAX_AGE_DAYS = 3
@@ -21,6 +21,8 @@ if __name__ == "__main__":
             if not is_fresh(job["posted_at"]):
                 continue
             if not title_ok(job["title"]):
+                continue
+            if not location_ok(job["location"]):
                 continue
             if java_hits(job["description"]) < MIN_JAVA_HITS:
                 continue

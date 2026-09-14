@@ -37,8 +37,14 @@ JAVA_KEYWORDS = [
     "llm", "claude", "copilot", "mcp", "prompt",
 ]
 
-MIN_JAVA_HITS = 3
+LOCATION_OK = ["montreal", "montréal", "quebec", "québec", "canada", "remote"]
 
+MIN_JAVA_HITS = 5
+
+
+def location_ok(location: str) -> bool:
+    loc = location.lower()
+    return any(word in loc for word in LOCATION_OK)
 
 def title_ok(title: str) -> bool:
     t = title.lower()
