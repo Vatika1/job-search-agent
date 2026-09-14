@@ -1,7 +1,9 @@
 import sqlite3
 from datetime import datetime, timezone
 
-DB_PATH = "jobs.db"
+from pathlib import Path
+
+DB_PATH = Path(__file__).parent / "jobs.db"
 
 
 def get_conn():
