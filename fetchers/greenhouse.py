@@ -25,7 +25,7 @@ def fetch(company_slug: str) -> list[dict]:
             "company": company_slug,
             "location": job.get("location", {}).get("name", ""),
             "url": job["absolute_url"],
-            "posted_at": job["updated_at"],
+            "posted_at": job.get("first_published") or job["updated_at"],
             "description": strip_html(job.get("content", "")),
         })
     return jobs

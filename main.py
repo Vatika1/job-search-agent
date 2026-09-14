@@ -3,9 +3,11 @@ from fetchers.greenhouse import fetch
 from storage import get_conn, is_seen, mark_seen
 from filters import title_ok, java_hits, MIN_JAVA_HITS, location_ok
 from scorer import score
+from notifier import send, format_jobs
 
+TOP_N = 15
 SLUGS = ["behavox", "workleap", "lyft"]
-MAX_AGE_DAYS = 3
+MAX_AGE_DAYS = 4
 
 
 def is_fresh(posted_at: str) -> bool:
@@ -16,7 +18,7 @@ def is_fresh(posted_at: str) -> bool:
 
 if __name__ == "__main__":
     conn = get_conn()
-    new_count = 0
+    results = []
     for slug in SLUGS:
         for job in fetch(slug):
             if not is_fresh(job["posted_at"]):
@@ -29,10 +31,12 @@ if __name__ == "__main__":
                 continue
             if is_seen(conn, job["id"]):
                 continue
-            result = score(job)
-            print(f"{result['score']:>3}  {job['title']} | {job['company']} | {job['location']}")
-            print(f"     {result['seniority_fit']} | {result['reason']}")
-            print(f"     {job['url']}\n")
+            results.append((job, score(job)))
             mark_seen(conn, job["id"])
-            new_count += 1
-    print(f"\n{new_count} new jobs")
+    results.sort(key=lambda x: x[1]["score"], reverse=True)
+    top = results[:TOP_N]
+    body = format_jobs(top) if top else "No new jobs today."
+    print(body)
+    if top:
+        send(f"Job agent: {len(top)} new matches", body)
+    print(f"\n{len(results)} new jobs, emailed top {len(top)}")
